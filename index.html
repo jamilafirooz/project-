@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fresh Oven Bakery System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="logo">🍞 Fresh Oven</div>
+        <div class="nav-links">
+            <a href="#" onclick="showSection('home')">Home</a>
+            <a href="#" onclick="showSection('admin-dashboard')">Admin Panel</a>
+        </div>
+    </nav>
+
+    <!-- LANDING PAGE (HOME) -->
+    <section id="home" class="view active">
+        <div class="hero">
+            <h1>The Best Bread in Town</h1>
+            <p>Freshly baked every morning. Price: <strong>20 AFN</strong> per loaf.</p>
+            <button onclick="showSection('admin-dashboard')" class="cta-btn">Go to Admin / Sales</button>
+        </div>
+        <div class="features">
+            <div class="card">
+                <div class="icon">🌾</div>
+                <h3>Organic Flour</h3>
+            </div>
+            <div class="card">
+                <div class="icon">🔥</div>
+                <h3>Wood Fire Oven</h3>
+            </div>
+            <div class="card">
+                <div class="icon">🚚</div>
+                <h3>Daily Delivery</h3>
+            </div>
+        </div>
+    </section>
+
+    <!-- ADMIN PANEL CONTAINER -->
+    <div id="admin-container" class="view">
+        
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <h3>Admin Menu</h3>
+            <ul>
+                <li onclick="showAdminTab('dashboard')">📊 Dashboard</li>
+                <li onclick="showAdminTab('register')">👤 Register Customer</li>
+                <li onclick="showAdminTab('manage')">📝 Manage & Sell</li>
+            </ul>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="main-content">
+            
+            <!-- Dashboard Tab -->
+            <div id="tab-dashboard" class="admin-tab active-tab">
+                <div class="dash-header">
+                    <h2>Dashboard Overview</h2>
+                    <!-- Date Selector for Filtering -->
+                    <div class="date-filter">
+                        <label>Select Month:</label>
+                        <input type="month" id="dashboard-month" onchange="updateDashboard()">
+                    </div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <h3>Active Customers</h3>
+                        <p id="total-customers">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Bread Sold (This Month)</h3>
+                        <p id="total-breads">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Revenue (This Month)</h3>
+                        <p id="total-revenue">0 AFN</p>
+                    </div>
+                </div>
+
+                <!-- Daily Breakdown Table -->
+                <h3>Daily Breakdown (Selected Month)</h3>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Total Bread Sold</th>
+                            <th>Total Income</th>
+                        </tr>
+                    </thead>
+                    <tbody id="daily-stats-body">
+                        <!-- JS fills this -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Register Customer Tab -->
+            <div id="tab-register" class="admin-tab">
+                <h2>Register New Customer</h2>
+                <form id="register-form">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" id="cust-name" required placeholder="e.g. Ahmad Khan">
+                    </div>
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="text" id="cust-phone" required placeholder="070 000 0000">
+                    </div>
+                    <div class="form-group">
+                        <label>Address</label>
+                        <input type="text" id="cust-address" placeholder="Street 5, Kabul">
+                    </div>
+                    <button type="submit" class="save-btn">Register Customer</button>
+                </form>
+            </div>
+
+            <!-- Manage Customers Tab -->
+            <div id="tab-manage" class="admin-tab">
+                <h2>Customer Control & Sales</h2>
+                <div class="search-bar">
+                    <input type="text" id="search-input" placeholder="Search customer name..." onkeyup="renderCustomerTable()">
+                </div>
+                
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Phone</th>
+                            <th>Total Bread (All Time)</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="customer-table-body">
+                        <!-- Javascript will fill this -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- SALES MODAL (POPUP) -->
+    <div id="sales-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <h2 id="modal-cust-name">Sell Bread</h2>
+            
+            <div class="counter-wrapper">
+                <button class="cnt-btn" onclick="adjustCount(-1)">➖</button>
+                <input type="number" id="sell-qty" value="1" min="1" readonly>
+                <button class="cnt-btn" onclick="adjustCount(1)">➕</button>
+            </div>
+
+            <p>Total Price: <strong id="modal-total-price">20</strong> AFN</p>
+            
+            <button class="save-btn" style="width:100%; margin-top:10px;" onclick="confirmSale()">✅ Confirm Sale</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
